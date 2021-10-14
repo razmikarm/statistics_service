@@ -1,5 +1,7 @@
 from django.db import models
 
+from collector.utils import handle_zero_div
+
 
 class Statistics(models.Model):
     date = models.DateField(
@@ -16,22 +18,30 @@ class Statistics(models.Model):
         default=0
     )
 
-    cost = models.IntegerField(
+    cost = models.FloatField(
         "Amount of cost of clicks in statistics",
         default=0
     )
 
     created_at = models.DateTimeField(
-        "DateTime when the record has been added",
+        "Record adding datetime",
         auto_now_add=True,
     )
 
     class Meta:
         verbose_name = "Collected Statistics"
-        ordering = ("data", "views", "clicks", "cost")
+        ordering = ("date", "views", "clicks", "cost")
 
     def __str__(self):
         return f"{self.date}"
 
     def __repr__(self):
         return f"Statistics({self.date}, {self.views}, {self.clicks}, {self.cost})"
+
+    @handle_zero_div
+    def cpc(self):
+        return self.cost / self.clicks
+
+    @handle_zero_div
+    def cpm(self):
+        return self.cost / self.views
