@@ -19,6 +19,7 @@ from .views import StatisticsViewSet
 urlpatterns = [
     path('', StatisticsViewSet.as_view({
         'post': 'create',
-        'get': 'list'
+        'get': 'list',
+        'delete': 'destroy'
     }), name="collector")
 ]

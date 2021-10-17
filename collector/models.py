@@ -18,7 +18,7 @@ class Statistics(models.Model):
         default=0
     )
 
-    cost = models.FloatField(
+    cost = models.IntegerField(
         "Amount of cost of clicks in statistics",
         default=0
     )
@@ -26,6 +26,11 @@ class Statistics(models.Model):
     created_at = models.DateTimeField(
         "Record adding datetime",
         auto_now_add=True,
+    )
+
+    updated_at = models.DateField(
+        "Record last updated",
+        auto_now=True,
     )
 
     class Meta:
@@ -40,8 +45,8 @@ class Statistics(models.Model):
 
     @handle_zero_div
     def cpc(self):
-        return self.cost / self.clicks
+        return f"{(self.cost / self.clicks):.2f}"
 
     @handle_zero_div
     def cpm(self):
-        return self.cost / self.views
+        return f"{(self.cost / self.views):.2f}"
